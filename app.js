@@ -1,44 +1,38 @@
-const openCameraBtn = document.getElementById("openCamera");
-const cameraContainer = document.getElementById("cameraContainer");
-const video = document.getElementById("video");
-const takePhotoBtn = document.getElementById("takePhoto");
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PWA Cámara</title>
+    
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#000000" />
 
-let stream = null;
+    <style>
+        #cameraContainer { display: none; margin-top: 10px; }
+        video, canvas { width: 320px; height: 240px; border: 2px solid black; }
+    </style>
+</head>
+<body>
+    <h2>PWA Cámara</h2>
 
-async function openCamera() {
-    try {
-        stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "environment", width: 320, height: 240 }
-        });
-        
-        video.srcObject = stream;
-        cameraContainer.style.display = "block";
-        openCameraBtn.disabled = true;
-    } catch (e) {
-        alert("No se pudo acceder a la cámara");
-    }
-}
+    <button id="openCamera">Abrir Cámara</button>
 
-function takePhoto() {
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    const base64Image = canvas.toDataURL("image/png");
-    console.log(base64Image);
+    <div id="cameraContainer">
+        <video id="video" autoplay></video><br>
+        <button id="takePhoto">Tomar Foto</button>
+        <br>
+        <canvas id="canvas" width="320" height="240"></canvas>
+    </div>
 
-    closeCamera();
-}
+    <script src="app.js"></script>
 
-function closeCamera() {
-    if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-        stream = null;
-        video.srcObject = null;
-        openCameraBtn.disabled = false;
-    }
-}
-
-openCameraBtn.addEventListener("click", openCamera);
-takePhotoBtn.addEventListener("click", takePhoto);
-
-window.addEventListener("beforeunload", closeCamera);
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("./sw.js")
+                .then(() => console.log("Service Worker registrado"))
+                .catch(err => console.log("Error SW:", err));
+        }
+    </script>
+</body>
+</html>
