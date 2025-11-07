@@ -1,24 +1,33 @@
-const CACHE_NAME = "camera-pwa-v1";
+// sw.js
+
+const CACHE_NAME = 'pwa-camera-cache-v1';
 const urlsToCache = [
-  "./",
-  "./index.html",
-  "./styles.css",
-  "./app.js",
-  "./manifest.json",
-  "./images/icon-192.png",
-  "./images/icon-512.png"
+    '/',
+    '/index.html',
+    '/styles.css',
+    '/app.js',
+    '/images/icons/192.png', // Asegúrate de tener un icono en esta ruta
+    '/images/icons/512.png'  // y otro aquí para el manifest
 ];
 
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
-  );
+self.addEventListener('install', event => {
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(cache => {
+                console.log('Opened cache');
+                return cache.addAll(urlsToCache);
+            })
+    );
 });
 
-self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then(
-      (response) => response || fetch(event.request)
-    )
-  );
+self.addEventListener('fetch', event => {
+    event.respondWith(
+        caches.match(event.request)
+            .then(response => {
+                if (response) {
+                    return response;
+                }
+                return fetch(event.request);
+            })
+    );
 });

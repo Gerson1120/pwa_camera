@@ -1,82 +1,91 @@
-const video = document.getElementById("video");
-const canvas = document.getElementById("canvas");
-const takePhotoBtn = document.getElementById("takePhoto");
-const switchCameraBtn = document.getElementById("switchCamera");
-const clearAllBtn = document.getElementById("clearAll");
-const gallery = document.getElementById("gallery");
-const leftArrow = document.getElementById("leftArrow");
-const rightArrow = document.getElementById("rightArrow");
+document.addEventListener('DOMContentLoaded', () => {
+    const openCameraBtn = document.getElementById('open-camera-btn');
+    const cameraContainer = document.getElementById('camera-container');
+    const cameraView = document.getElementById('camera-view');
+    const captureBtn = document.getElementById('capture-btn');
+    const switchCameraBtn = document.getElementById('switch-camera-btn');
+    const closeCameraBtn = document.getElementById('close-camera-btn');
 
-let stream = null;
-let usingFrontCamera = false;
-let photos = JSON.parse(localStorage.getItem("photos") || "[]");
+    const galleryContainer = document.getElementById('gallery-container');
+    const photoGallery = document.getElementById('photo-gallery');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const deleteAllBtn = document.getElementById('delete-all-btn'); // Variable actualizada
 
-async function openCamera() {
-  if (stream) stream.getTracks().forEach(track => track.stop());
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: usingFrontCamera ? "user" : "environment" },
+    let currentStream;
+    let facingMode = 'user';
+
+    // --- Funciones de la Cámara ---
+
+    const startCamera = async () => {
+        try {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+            }
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: facingMode }
+            });
+            cameraView.srcObject = stream;
+            currentStream = stream;
+            cameraContainer.classList.remove('hidden');
+            openCameraBtn.parentElement.classList.add('hidden');
+        } catch (error) {
+            console.error('Error al acceder a la cámara:', error);
+            alert('No se pudo acceder a la cámara. Asegúrate de dar los permisos necesarios.');
+        }
+    };
+
+    openCameraBtn.addEventListener('click', startCamera);
+
+    switchCameraBtn.addEventListener('click', () => {
+        facingMode = facingMode === 'user' ? 'environment' : 'user';
+        startCamera();
     });
-    video.srcObject = stream;
-  } catch (err) {
-    alert("No se puede acceder a la cámara: " + err.message);
-  }
-}
 
-switchCameraBtn.addEventListener("click", () => {
-  usingFrontCamera = !usingFrontCamera;
-  openCamera();
+    closeCameraBtn.addEventListener('click', () => {
+        if (currentStream) {
+            currentStream.getTracks().forEach(track => track.stop());
+        }
+        cameraContainer.classList.add('hidden');
+        openCameraBtn.parentElement.classList.remove('hidden');
+    });
+
+    captureBtn.addEventListener('click', () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = cameraView.videoWidth;
+        canvas.height = cameraView.videoHeight;
+        const context = canvas.getContext('2d');
+        context.drawImage(cameraView, 0, 0, canvas.width, canvas.height);
+
+        const imageUrl = canvas.toDataURL('image/jpeg');
+        const img = document.createElement('img');
+        img.src = imageUrl;
+
+        photoGallery.appendChild(img);
+        galleryContainer.classList.remove('hidden');
+        
+        // --- CAMBIO ---
+        // Ya no cerramos la cámara automáticamente
+        // closeCameraBtn.click(); 
+    });
+
+
+    // --- Funciones de la Galería ---
+
+    prevBtn.addEventListener('click', () => {
+        photoGallery.scrollBy({ left: -photoGallery.clientWidth, behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', () => {
+        photoGallery.scrollBy({ left: photoGallery.clientWidth, behavior: 'smooth' });
+    });
+
+    // --- CAMBIO ---
+    // Nueva funcionalidad para el botón "Eliminar Todas"
+    deleteAllBtn.addEventListener('click', () => {
+        // Vacía el contenedor de la galería
+        photoGallery.innerHTML = '';
+        // Oculta el contenedor de la galería
+        galleryContainer.classList.add('hidden');
+    });
 });
-
-takePhotoBtn.addEventListener("click", () => {
-  const ctx = canvas.getContext("2d");
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  ctx.drawImage(video, 0, 0);
-  const imageUrl = canvas.toDataURL("image/png");
-  photos.push(imageUrl);
-  localStorage.setItem("photos", JSON.stringify(photos));
-  updateGallery();
-});
-
-clearAllBtn.addEventListener("click", () => {
-  if (photos.length === 0) return alert("No hay fotos que eliminar.");
-  if (confirm("¿Seguro que deseas eliminar todas las fotos?")) {
-    photos = [];
-    localStorage.removeItem("photos");
-    updateGallery();
-  }
-});
-
-function updateGallery() {
-  gallery.innerHTML = "";
-  photos.forEach((photo, index) => {
-    const img = document.createElement("img");
-    img.src = photo;
-    img.addEventListener("click", () => selectPhoto(index, img));
-    gallery.appendChild(img);
-  });
-}
-
-function selectPhoto(index, img) {
-  const selected = gallery.querySelector(".selected");
-  if (selected) selected.classList.remove("selected");
-  img.classList.add("selected");
-
-  if (confirm("¿Eliminar esta foto?")) {
-    photos.splice(index, 1);
-    localStorage.setItem("photos", JSON.stringify(photos));
-    updateGallery();
-  }
-}
-
-leftArrow.addEventListener("click", () => {
-  gallery.scrollBy({ left: -150, behavior: "smooth" });
-});
-
-rightArrow.addEventListener("click", () => {
-  gallery.scrollBy({ left: 150, behavior: "smooth" });
-});
-
-openCamera();
-updateGallery();

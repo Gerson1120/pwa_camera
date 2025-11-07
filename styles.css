@@ -1,151 +1,90 @@
-/* ====== GENERAL ====== */
 body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: #121212;
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
-header {
-  background: #1e1e1e;
-  width: 100%;
-  text-align: center;
-  padding: 12px 0;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-}
-
-h1 {
-  font-size: 1.4rem;
-  margin: 0;
-  color: #00b7ff;
-}
-
-/* ====== CÁMARA ====== */
-#cameraContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 90%;
-  max-width: 420px;
-  margin-top: 15px;
-}
-
-video {
-  width: 100%;
-  border-radius: 16px;
-  background: #000;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
-
-/* ====== BOTONES ====== */
-.controls {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  margin-top: 15px;
-  gap: 8px;
+#main-container,
+#camera-container,
+#gallery-container {
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 button {
-  border: none;
-  border-radius: 12px;
-  font-size: 1rem;
-  padding: 10px 15px;
-  color: #fff;
-  cursor: pointer;
-  transition: 0.2s ease;
-  flex: 1;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    margin: 5px;
+    transition: background-color 0.3s;
 }
 
-.primary {
-  background: linear-gradient(135deg, #00b7ff, #0077ff);
+button:hover {
+    background-color: #0056b3;
 }
 
-.primary:hover {
-  background: linear-gradient(135deg, #0095d9, #005ccc);
+.hidden {
+    display: none;
 }
 
-.secondary {
-  background: #3a3a3a;
+#camera-view {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #000;
 }
 
-.secondary:hover {
-  background: #555;
+.camera-controls {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
 }
 
-.danger {
-  background: #ff4747;
+h2 {
+    color: #555;
+    margin-bottom: 15px;
 }
 
-.danger:hover {
-  background: #e43b3b;
+.gallery-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
-/* ====== GALERÍA ====== */
-#gallerySection {
-  width: 100%;
-  max-width: 500px;
-  text-align: center;
-  margin-top: 25px;
+#photo-gallery {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    gap: 10px;
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    margin: 0 10px;
+    flex: 1;
 }
 
-#gallerySection h2 {
-  font-size: 1.1rem;
-  margin-bottom: 8px;
-  color: #00b7ff;
+#photo-gallery img {
+    scroll-snap-align: center;
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
 }
 
-#galleryContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.arrow {
-  background: transparent;
-  color: #00b7ff;
-  font-size: 1.5rem;
-  border: none;
-  cursor: pointer;
-}
-
-.scroll-gallery {
-  display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  width: 80%;
-  gap: 10px;
-  padding: 5px;
-}
-
-.scroll-gallery img {
-  height: 110px;
-  border-radius: 10px;
-  object-fit: cover;
-  transition: 0.3s ease;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-}
-
-.scroll-gallery img:hover {
-  transform: scale(1.05);
-}
-
-.scroll-gallery img.selected {
-  outline: 3px solid #ff3333;
-}
-
-/* ====== SCROLL ====== */
-.scroll-gallery::-webkit-scrollbar {
-  height: 6px;
-}
-.scroll-gallery::-webkit-scrollbar-thumb {
-  background: #00b7ff;
-  border-radius: 3px;
+.nav-btn {
+    padding: 10px 15px;
 }

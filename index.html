@@ -1,48 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Cámara PWA</title>
-
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#121212">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Camera App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <header>
-    <h1>Cámara PWA</h1>
-  </header>
 
-  <main>
-    <section id="cameraContainer">
-      <video id="video" autoplay playsinline></video>
-      <canvas id="canvas" style="display:none;"></canvas>
+    <div id="main-container">
+        <button id="open-camera-btn">Abrir Cámara</button>
+    </div>
 
-      <div class="controls">
-        <button id="switchCamera" class="secondary">🔄</button>
-        <button id="takePhoto" class="primary">Tomar Foto</button>
-        <button id="clearAll" class="danger">🗑️</button>
-      </div>
-    </section>
+    <div id="camera-container" class="hidden">
+        <video id="camera-view" autoplay playsinline></video>
+        <div class="camera-controls">
+            <button id="capture-btn">Tomar Foto</button>
+            <button id="switch-camera-btn">Cambiar Cámara</button>
+        </div>
+        <button id="close-camera-btn">Cerrar</button>
+    </div>
 
-    <section id="gallerySection">
-      <h2>Mis Fotos</h2>
-      <div id="galleryContainer">
-        <button id="leftArrow" class="arrow">⬅️</button>
-        <div id="gallery" class="scroll-gallery"></div>
-        <button id="rightArrow" class="arrow">➡️</button>
-      </div>
-    </section>
-  </main>
+    <div id="gallery-container" class="hidden">
+        <h2>Fotos Capturadas</h2>
+        <div class="gallery-wrapper">
+            <button id="prev-btn" class="nav-btn">&lt;</button>
+            <div id="photo-gallery">
+                <!-- Las fotos capturadas se agregarán aquí -->
+            </div>
+            <button id="next-btn" class="nav-btn">&gt;</button>
+        </div>
+        <!-- BOTÓN ACTUALIZADO -->
+        <button id="delete-all-btn">Eliminar Todas</button>
+    </div>
 
-  <script src="app.js"></script>
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js");
-    }
-  </script>
+    <script src="app.js"></script>
 </body>
 </html>
