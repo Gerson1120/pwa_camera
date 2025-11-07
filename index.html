@@ -1,62 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PWA Cámara</title>
-    
-    <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#000000" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Cámara PWA</title>
 
-    <style>
-    #cameraContainer { 
-        display: none; 
-        margin-top: 10px; 
-        text-align: center;
-    }
+    <!-- PWA Meta -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
-    video {
-        width: 100%;
-        height: auto;
-        max-width: 360px; /* límite visual en móviles */
-        object-fit: contain;
-        background: black;
-        border: 2px solid black;
-        border-radius: 8px;
-    }
-
-    canvas {
-        width: 100%;
-        height: auto;
-        max-width: 360px;
-        object-fit: contain;
-        background: black;
-        border: 2px solid black;
-        border-radius: 8px;
-        margin-top: 10px;
-    }
-</style>
-
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h2>PWA Cámara</h2>
-
-    <button id="openCamera">Abrir Cámara</button>
+    <h1>Cámara PWA</h1>
 
     <div id="cameraContainer">
-        <video id="video" autoplay></video><br>
-        <button id="takePhoto">Tomar Foto</button>
-        <br>
-        <canvas id="canvas" width="320" height="240"></canvas>
+        <video id="video" autoplay playsinline></video>
+        <canvas id="canvas" style="display:none;"></canvas>
+        <div class="controls">
+            <button id="switchCamera">🔄 Cambiar Cámara</button>
+            <button id="takePhoto">📸 Tomar Foto</button>
+        </div>
+    </div>
+
+    <div id="galleryContainer">
+        <button id="leftArrow">⬅️</button>
+        <div id="gallery" class="scroll-gallery"></div>
+        <button id="rightArrow">➡️</button>
     </div>
 
     <script src="app.js"></script>
-
     <script>
         if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("./sw.js")
-                .then(() => console.log("Service Worker registrado"))
-                .catch(err => console.log("Error SW:", err));
+            navigator.serviceWorker.register("sw.js");
         }
     </script>
 </body>
