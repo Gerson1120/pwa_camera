@@ -1,40 +1,48 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Cámara PWA</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Cámara PWA</title>
 
-    <!-- PWA Meta -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#000000">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#121212">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 
-    <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <header>
     <h1>Cámara PWA</h1>
+  </header>
 
-    <div id="cameraContainer">
-        <video id="video" autoplay playsinline></video>
-        <canvas id="canvas" style="display:none;"></canvas>
-        <div class="controls">
-            <button id="switchCamera">🔄 Cambiar Cámara</button>
-            <button id="takePhoto">📸 Tomar Foto</button>
-        </div>
-    </div>
+  <main>
+    <section id="cameraContainer">
+      <video id="video" autoplay playsinline></video>
+      <canvas id="canvas" style="display:none;"></canvas>
 
-    <div id="galleryContainer">
-        <button id="leftArrow">⬅️</button>
+      <div class="controls">
+        <button id="switchCamera" class="secondary">🔄</button>
+        <button id="takePhoto" class="primary">Tomar Foto</button>
+        <button id="clearAll" class="danger">🗑️</button>
+      </div>
+    </section>
+
+    <section id="gallerySection">
+      <h2>Mis Fotos</h2>
+      <div id="galleryContainer">
+        <button id="leftArrow" class="arrow">⬅️</button>
         <div id="gallery" class="scroll-gallery"></div>
-        <button id="rightArrow">➡️</button>
-    </div>
+        <button id="rightArrow" class="arrow">➡️</button>
+      </div>
+    </section>
+  </main>
 
-    <script src="app.js"></script>
-    <script>
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("sw.js");
-        }
-    </script>
+  <script src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js");
+    }
+  </script>
 </body>
 </html>
